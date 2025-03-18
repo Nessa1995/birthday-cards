@@ -22,10 +22,11 @@
             box-shadow: 2px 2px 10px rgba(0,0,0,0.1); 
             text-align: center;
             background-color: #fff;
+            width: 200px;
         }
         img {
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            height: 150px;
             object-fit: cover;
             border-radius: 5px;
         }
@@ -71,7 +72,7 @@
                     <strong>${card.name}</strong><br>
                     ${card.claimed ? `
                         <span style="color: red;">Claimed by ${card.claimed_by}</span><br>
-                        <a href="${card.download}" download>
+                        <a href="${card.image}" download>
                             <button class="download-button">Download</button>
                         </a>`
                     : `<button onclick="claimCard('${card.name}')">Claim</button>`}
