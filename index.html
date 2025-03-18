@@ -24,8 +24,8 @@
             background-color: #fff;
         }
         img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             object-fit: cover;
             border-radius: 5px;
         }
@@ -65,12 +65,13 @@
             cards.forEach(card => {
                 let cardElement = document.createElement("div");
                 cardElement.classList.add("card");
+
                 cardElement.innerHTML = `
                     <img src="${card.image}" alt="Card Image"><br>
                     <strong>${card.name}</strong><br>
                     ${card.claimed ? `
                         <span style="color: red;">Claimed by ${card.claimed_by}</span><br>
-                        <a href="${card.image}" download class="download-button">
+                        <a href="${card.download}" download>
                             <button class="download-button">Download</button>
                         </a>`
                     : `<button onclick="claimCard('${card.name}')">Claim</button>`}
