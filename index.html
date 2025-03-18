@@ -7,15 +7,50 @@
 
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
-        .card { display: inline-block; margin: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
-        button { padding: 10px; cursor: pointer; background-color: #28a745; color: white; border: none; border-radius: 5px; }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-content: center;
+            max-width: 800px;
+            margin: auto;
+        }
+        .card { 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1); 
+            text-align: center;
+            background-color: #fff;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        button { 
+            padding: 10px; 
+            cursor: pointer; 
+            background-color: #28a745; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            margin-top: 10px;
+        }
         button:hover { background-color: #218838; }
+        .download-button {
+            background-color: #007bff;
+        }
+        .download-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
     <h1>Pick a Birthday Card</h1>
-    <div id="cards-container"></div>
+    <div class="cards-container" id="cards-container"></div>
 
     <script>
         const sheetURL = "https://script.google.com/macros/s/AKfycbyT_Mcrcp-09eUtLz7XLEHqPnx634lFDKhr_21a86QZa0msjN_xCLfPaVb8OXr0YgGoTQ/exec";
@@ -31,9 +66,13 @@
                 let cardElement = document.createElement("div");
                 cardElement.classList.add("card");
                 cardElement.innerHTML = `
-                    <img src="${card.image}" width="150"><br>
+                    <img src="${card.image}" alt="Card Image"><br>
                     <strong>${card.name}</strong><br>
-                    ${card.claimed ? `<span style="color: red;">Claimed by ${card.claimed_by}</span>` 
+                    ${card.claimed ? `
+                        <span style="color: red;">Claimed by ${card.claimed_by}</span><br>
+                        <a href="${card.image}" download class="download-button">
+                            <button class="download-button">Download</button>
+                        </a>`
                     : `<button onclick="claimCard('${card.name}')">Claim</button>`}
                 `;
                 container.appendChild(cardElement);
