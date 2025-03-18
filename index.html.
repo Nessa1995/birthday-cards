@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim a Birthday Card</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .card { display: inline-block; margin: 10px; padding: 10px; border: 1px solid #ddd; }
+        button { padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Pick Your Birthday Card</h1>
+    <div id="cards-container"></div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const container = document.getElementById("cards-container");
+
+        function fetchCards() {
+            db.collection("cards").onSnapshot(snapshot => {
+                container.innerHTML = "";
+                snapshot.forEach(doc => {
+                    let card = doc.data();
+                    let cardElement = document.createElement("div");
+                    cardElement.classList.add("card");
+                    cardElement.innerHTML = `
+                        <img src="${card.image}" width="150"><br>
+                        <strong>${card.name}</strong><br>
+                        ${card.claimed ? `<span style="color: red;">Claimed by ${card.claimed_by}</span>` 
+                        : `<button onclick="claimCard('${doc.id}')">Claim</button>`}
+                    `;
+                    container.appendChild(cardElement);
+                });
+            });
+        }
+
+        function claimCard(id) {
+            let userName = prompt("Enter your name to claim this card:");
+            if (!userName) return;
+            
+            db.collection("cards").doc(id).update({
+                claimed: true,
+                claimed_by: userName
+            });
+        }
+
+        fetchCards();
+    </script>
+
+</body>
+</html>
