@@ -3,40 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim a Birthday Card</title>
+    <title>Pick a Birthday Card</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         .card { display: inline-block; margin: 10px; padding: 10px; border: 1px solid #ddd; }
         button { padding: 10px; cursor: pointer; }
     </style>
+
+    <!-- Optional Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
 
-    <h1>Pick A Birthday Card</h1>
+    <h1>Pick a Birthday Card</h1>
     <div id="cards-container"></div>
 
     <script>
-        // Firebase configuration
+        // ✅ Replace these values with your actual Firebase project credentials
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_MESSAGING_ID",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
             appId: "YOUR_APP_ID"
         };
 
-        // Initialize Firebase
+        // ✅ Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const container = document.getElementById("cards-container");
-
+        // ✅ Fetch and Display Birthday Cards
         function fetchCards() {
             db.collection("cards").onSnapshot(snapshot => {
-                container.innerHTML = "";
+                let container = document.getElementById("cards-container");
+                container.innerHTML = ""; // Clear existing content
                 snapshot.forEach(doc => {
                     let card = doc.data();
                     let cardElement = document.createElement("div");
@@ -52,6 +56,7 @@
             });
         }
 
+        // ✅ Claim a Card
         function claimCard(id) {
             let userName = prompt("Enter your name to claim this card:");
             if (!userName) return;
@@ -62,6 +67,7 @@
             });
         }
 
+        // ✅ Load Cards
         fetchCards();
     </script>
 
